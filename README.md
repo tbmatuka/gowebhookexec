@@ -10,6 +10,7 @@ GoWebhookExec is a service for handling webhooks written in Go. It lets you trig
 * Pass attributes safely to your scripts (more details in the [os.exec documentation](https://pkg.go.dev/os/exec))
 * Pass files or other large payloads through the request body
 * Use SSL to encrypt your HTTP connection
+* Real time output to the HTTP response while the command is running
 
 # Usage
 
