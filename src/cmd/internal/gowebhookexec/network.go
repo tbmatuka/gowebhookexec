@@ -5,11 +5,16 @@ import (
   "net/http"
 )
 
-func Listen(host string, port string) {
-  config := newRequestHandlerConfig("test", "secret", "webhook.sh")
-  requestHandler := getRequestHandlerManager().newHandler(config)
+func Listen(config ViperConfig) {
+  for handlerName, handlerViperConfig := range config.Handler {
+    handlerConfig := newRequestHandlerConfig(handlerName, handlerViperConfig.Key, handlerViperConfig.CmdName)
+    requestHandler := getRequestHandlerManager().newHandler(handlerConfig)
+    http.HandleFunc(handlerConfig.Path, requestHandler.handleRequest)
+  }
 
-  http.HandleFunc(config.Path, requestHandler.handleRequest)
-
-  log.Fatal(http.ListenAndServe(host + ":" + port, nil))
+  if config.SslKey != "" && config.SslCert != "" {
+    log.Fatal(http.ListenAndServeTLS(config.Host+":"+config.Port, config.SslCert, config.SslKey, nil))
+  } else {
+    log.Fatal(http.ListenAndServe(config.Host+":"+config.Port, nil))
+  }
 }

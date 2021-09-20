@@ -52,8 +52,10 @@ func (requestHandler *requestHandler) handleRequest(response http.ResponseWriter
   cmd.Env = append(cmd.Env, "remoteAddr=" + strings.Split(request.RemoteAddr, ":")[0])
 
   // set query params as arguments
-  for _, queryString := range strings.Split(request.URL.RawQuery, "&") {
-    cmd.Args = append(cmd.Args, queryString)
+  if request.URL.RawQuery != "" {
+    for _, queryString := range strings.Split(request.URL.RawQuery, "&") {
+      cmd.Args = append(cmd.Args, queryString)
+    }
   }
 
   // connect body to stdin
@@ -65,7 +67,7 @@ func (requestHandler *requestHandler) handleRequest(response http.ResponseWriter
 
   stdout := bufio.NewScanner(stdoutPipe)
 
-  log.Print("start ", cmd.String())
+  log.Print("["+requestHandler.Name+"] start: ", cmd.String())
 
   err := cmd.Start()
   if err != nil {
@@ -80,5 +82,5 @@ func (requestHandler *requestHandler) handleRequest(response http.ResponseWriter
 
   err = cmd.Wait()
 
-  log.Print("end ", cmd.String())
+  log.Print("["+requestHandler.Name+"] end")
 }
