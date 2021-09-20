@@ -20,7 +20,8 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           goos: ${{ matrix.goos }}
           goarch: ${{ matrix.goarch }}
-          project_path: "./cmd/webhook-exec"
+          project_path: "./src"
           binary_name: "webhook-exec"
           ldflags: "-s -w"
           extra_files: LICENSE.txt README.md misc
+          overwrite: true
