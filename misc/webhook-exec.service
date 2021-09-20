@@ -1,0 +1,8 @@
+[Unit]
+Description=Webhook Exec
+
+[Service]
+ExecStart=/usr/local/bin/webhook-exec
+
+[Install]
+WantedBy=default.target

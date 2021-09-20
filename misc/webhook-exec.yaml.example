@@ -1,0 +1,12 @@
+host: eth0
+port: 4567
+sslcert: /etc/ssl/domain.crt
+sslkey: /etc/ssl/domain.key
+
+handler:
+  default:
+    key: secret
+    cmd: "/usr/local/deploy.sh all"
+  app1:
+    key: secret1
+    cmd: "/usr/local/deploy.sh app1"
