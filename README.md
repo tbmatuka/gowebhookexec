@@ -11,6 +11,7 @@ GoWebhookExec is a service for handling webhooks written in Go. It lets you trig
 * Pass files or other large payloads through the request body
 * Use SSL to encrypt your HTTP connection
 * Real time output to the HTTP response while the command is running
+* Execution lock per handler makes sure you don't trigger more than one run at the time (but you should still have locking in your deploy script as well)
 
 # Installation
 
