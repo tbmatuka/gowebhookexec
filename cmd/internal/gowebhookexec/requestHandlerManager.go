@@ -1,40 +1,40 @@
 package gowebhookexec
 
 import (
-  "log"
-  "sync"
+	"log"
+	"sync"
 )
 
 type requestHandlerManager struct {
-  requestHandlers map[string]*requestHandler
+	requestHandlers map[string]*requestHandler
 }
 
-var containerRequestHandlerManagerLock = &sync.Mutex{}
-var containerRequestHandlerManager *requestHandlerManager
+var containerRequestHandlerManagerLock = &sync.Mutex{} //nolint:gochecknoglobals
+var containerRequestHandlerManager *requestHandlerManager //nolint:gochecknoglobals
 
 func getRequestHandlerManager() *requestHandlerManager {
-  if containerRequestHandlerManager == nil {
-    // only lock on initialization
-    containerRequestHandlerManagerLock.Lock()
+	if containerRequestHandlerManager == nil {
+		// only lock on initialization
+		containerRequestHandlerManagerLock.Lock()
 
-    // check again after lock
-    if containerRequestHandlerManager == nil {
-      containerRequestHandlerManager = new(requestHandlerManager)
-      containerRequestHandlerManager.requestHandlers = make(map[string]*requestHandler)
-    }
+		// check again after lock
+		if containerRequestHandlerManager == nil {
+			containerRequestHandlerManager = new(requestHandlerManager)
+			containerRequestHandlerManager.requestHandlers = make(map[string]*requestHandler)
+		}
 
-    containerRequestHandlerManagerLock.Unlock()
-  }
+		containerRequestHandlerManagerLock.Unlock()
+	}
 
-  return containerRequestHandlerManager
+	return containerRequestHandlerManager
 }
 
 func (requestHandlerManager *requestHandlerManager) newHandler(config requestHandlerConfig) *requestHandler {
-  requestHandler := newRequestHandler(&config)
+	requestHandler := newRequestHandler(&config)
 
-  log.Println("Starting handler:", config.Path)
+	log.Println("Starting handler:", config.Path)
 
-  requestHandlerManager.requestHandlers[config.Name] = requestHandler
+	requestHandlerManager.requestHandlers[config.Name] = requestHandler
 
-  return requestHandler
+	return requestHandler
 }
