@@ -12,6 +12,11 @@ GoWebhookExec is a service for handling webhooks written in Go. It lets you trig
 * Use SSL to encrypt your HTTP connection
 * Real time output to the HTTP response while the command is running
 
+# Installation
+
+At the moment your only options are building the app yourself or downloading the [release](https://github.com/tbmatuka/gowebhookexec/releases/latest) package which contains a built binary:
+`https://github.com/tbmatuka/gowebhookexec/releases/download/v1.0/webhook-exec-v1.0-linux-amd64.tar.gz`
+
 # Usage
 
 ## Command options
@@ -68,3 +73,7 @@ Trigger a deploy script on your server from your CI. Pass a version/tag to the s
 ## Restarting services
 
 If you have an unreliable service that you can't fix and your only option is to restart it when it fails, you can use a webhook to restart it. You could set up an external monitoring service to restart it automatically or give the link to someone who doesn't have permissions to access the server but can be trusted to restart the service.
+
+## Running tasks on a docker hosts from a container
+
+Sometimes you need to trigger commands on your docker/VM host from inside the container. You could even have a container provide its own config or config template (for example if you have a HTTP proxy running on the host in front of your containers).
