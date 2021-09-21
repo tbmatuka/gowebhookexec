@@ -53,9 +53,7 @@ func (requestHandler *requestHandler) handleRequest(response http.ResponseWriter
 
   // set query params as arguments
   if request.URL.RawQuery != "" {
-    for _, queryString := range strings.Split(request.URL.RawQuery, "&") {
-      cmd.Args = append(cmd.Args, queryString)
-    }
+    cmd.Args = append(cmd.Args, strings.Split(request.URL.RawQuery, "&")...)
   }
 
   // connect body to stdin
