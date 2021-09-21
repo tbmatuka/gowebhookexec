@@ -1,9 +1,10 @@
 package gowebhookexec
 
 import (
+	"log"
+
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
-	"log"
 )
 
 type ViperConfig struct {

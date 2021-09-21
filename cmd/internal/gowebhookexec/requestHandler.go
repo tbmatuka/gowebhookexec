@@ -31,10 +31,9 @@ func newRequestHandler(config *requestHandlerConfig) *requestHandler {
 func (requestHandler *requestHandler) handleRequest(response http.ResponseWriter, request *http.Request) {
 	// check key
 	pathArgs := strings.Split(strings.Trim(request.URL.Path[len(requestHandler.Path):], "/"), "/")
-	requestKey := pathArgs[0]
-	if requestKey != requestHandler.key {
+	if pathArgs[0] != requestHandler.key {
 		response.WriteHeader(http.StatusForbidden)
-		response.Write([]byte("Invalid key."))
+		_, _ = response.Write([]byte("Invalid key."))
 
 		return
 	}
@@ -46,7 +45,7 @@ func (requestHandler *requestHandler) handleRequest(response http.ResponseWriter
 	}()
 
 	// execute command
-	cmd := exec.Command(requestHandler.cmdName)
+	cmd := exec.Command(requestHandler.cmdName) //nolint:gosec
 
 	// set remoteAddr as env variable
 	cmd.Env = append(cmd.Env, "remoteAddr="+strings.Split(request.RemoteAddr, ":")[0])
@@ -65,20 +64,25 @@ func (requestHandler *requestHandler) handleRequest(response http.ResponseWriter
 
 	stdout := bufio.NewScanner(stdoutPipe)
 
-	log.Print("["+requestHandler.Name+"] start: ", cmd.String())
+	log.Printf("[%s] start: %s\n", requestHandler.Name, cmd.String())
 
 	err := cmd.Start()
 	if err != nil {
 		log.Panicln(err)
 	}
 
-	flusher := response.(http.Flusher)
+	flusher, flusherOk := response.(http.Flusher)
 	for stdout.Scan() {
-		response.Write([]byte(stdout.Text() + "\n"))
-		flusher.Flush()
+		_, err = response.Write([]byte(stdout.Text() + "\n"))
+		if err == nil && flusherOk {
+			flusher.Flush()
+		}
 	}
 
 	err = cmd.Wait()
+	if err != nil {
+		log.Printf("[%s] wait eror: %v\n", requestHandler.Name, err)
+	}
 
-	log.Print("[" + requestHandler.Name + "] end")
+	log.Printf("[%s] end\n", requestHandler.Name)
 }

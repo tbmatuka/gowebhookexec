@@ -9,8 +9,10 @@ type requestHandlerManager struct {
 	requestHandlers map[string]*requestHandler
 }
 
-var containerRequestHandlerManagerLock = &sync.Mutex{} //nolint:gochecknoglobals
-var containerRequestHandlerManager *requestHandlerManager //nolint:gochecknoglobals
+var (
+	containerRequestHandlerManagerLock = &sync.Mutex{}        //nolint:gochecknoglobals
+	containerRequestHandlerManager     *requestHandlerManager //nolint:gochecknoglobals
+)
 
 func getRequestHandlerManager() *requestHandlerManager {
 	if containerRequestHandlerManager == nil {
