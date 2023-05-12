@@ -16,7 +16,7 @@ GoWebhookExec is a service for handling webhooks written in Go. It lets you trig
 # Installation
 
 At the moment your only options are building the app yourself or downloading the [release](https://github.com/tbmatuka/gowebhookexec/releases/latest) package which contains a built binary:
-`https://github.com/tbmatuka/gowebhookexec/releases/download/v1.0/webhook-exec-v1.0-linux-amd64.tar.gz`
+`https://github.com/tbmatuka/gowebhookexec/releases/download/v1.1/webhook-exec-v1.1-linux-amd64.tar.gz`
 
 # Usage
 
