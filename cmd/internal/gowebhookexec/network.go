@@ -12,6 +12,8 @@ func Listen(config ViperConfig) {
 		http.HandleFunc(handlerConfig.Path, requestHandler.handleRequest)
 	}
 
+	log.Println("Listening on:", config.Host+":"+config.Port)
+
 	if config.SslKey != "" && config.SslCert != "" {
 		log.Fatal(http.ListenAndServeTLS(config.Host+":"+config.Port, config.SslCert, config.SslKey, nil))
 	} else {

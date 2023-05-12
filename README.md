@@ -78,3 +78,7 @@ If you have an unreliable service that you can't fix and your only option is to 
 ## Running tasks on a docker hosts from a container
 
 Sometimes you need to trigger commands on your docker/VM host from inside the container. You could even have a container provide its own config or config template (for example if you have a HTTP proxy running on the host in front of your containers).
+
+## Getting health status of services
+
+You can have a shell script gets renders health status or versions of services you are interested in. Instead of running a cron job and pushing the results of the script, you can either see them in your browser or grab them with a tool that aggregates them.
