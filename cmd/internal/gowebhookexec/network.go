@@ -3,6 +3,7 @@ package gowebhookexec
 import (
 	"log"
 	"net/http"
+	"time"
 )
 
 func Listen(config ViperConfig) {
@@ -12,11 +13,16 @@ func Listen(config ViperConfig) {
 		http.HandleFunc(handlerConfig.Path, requestHandler.handleRequest)
 	}
 
-	log.Println("Listening on:", config.Host+":"+config.Port)
+	server := &http.Server{
+		Addr:              config.Host + ":" + config.Port,
+		ReadHeaderTimeout: 3 * time.Second,
+	}
+
+	log.Println("Listening on:", server.Addr)
 
 	if config.SslKey != "" && config.SslCert != "" {
-		log.Fatal(http.ListenAndServeTLS(config.Host+":"+config.Port, config.SslCert, config.SslKey, nil))
+		log.Fatal(server.ListenAndServeTLS(config.SslCert, config.SslKey))
 	} else {
-		log.Fatal(http.ListenAndServe(config.Host+":"+config.Port, nil))
+		log.Fatal(server.ListenAndServe())
 	}
 }
