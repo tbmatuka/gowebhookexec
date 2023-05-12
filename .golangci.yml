@@ -2,12 +2,14 @@
 linters-settings:
   govet:
     check-shadowing: true
-  revive:
-    severity: warning
+  golint:
+    min-confidence: 0
   gocyclo:
     min-complexity: 42
   cyclop:
     max-complexity: 42
+  maligned:
+    suggest-new: true
   dupl:
     threshold: 200
   goconst:
@@ -19,23 +21,52 @@ linters-settings:
 linters:
   enable-all: true
   disable:
-    - exhaustivestruct
-    - funlen
-    - goconst
-    - godot
-    - goerr113
-    - golint
-    - gomnd
-    - interfacer
-    - lll
-    - maligned
-    - nestif
-    - nlreturn
-    - paralleltest
-    - scopelint
-    - whitespace
+    - golint # deprecated, replaced with revive
+    - interfacer # deprecated
+    - maligned # deprecated
     - wrapcheck
+    - nlreturn
+    - gomnd
+    - goerr113
+    - exhaustivestruct
     - wsl
+    - whitespace
+    - lll
+    - scopelint
+    - nestif
+    - funlen
+    - paralleltest
+    - godot
+    - varnamelen
+    - ireturn
+    - ifshort
+    - thelper
+    - wastedassign
+    - goconst
+    - gci
+    - exhaustruct
+    - nonamedreturns
+    - interfacebloat
+    - dupword
+    - forcetypeassert #tmp needs to be on
+    - ifshort # deprecated
+    - structcheck # deprecated
+    - deadcode # deprecated
+    - nosnakecase # deprecated
+    - varcheck # deprecated
+    - rowserrcheck # deprecated
+    - sqlclosecheck # deprecated
+    - wastedassign # deprecated
+    - golint # deprecated
+    - interfacer # deprecated
+    - maligned # deprecated
+
+issues:
+  exclude:
+    # bugs of typecheck linter
+    - "undeclared name: `shellquote`"
+    - "github.com/kballard/go-shellquote\" imported but not used"
+    - "github.com/haproxytech/config-parser/v4/types\" imported but not used"
 
 run:
   skip-dirs:

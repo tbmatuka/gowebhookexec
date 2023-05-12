@@ -22,7 +22,7 @@ func Listen(config ViperConfig) {
 
 	if config.SslKey != "" && config.SslCert != "" {
 		log.Fatal(server.ListenAndServeTLS(config.SslCert, config.SslKey))
-	} else {
+	} else { //nolint:revive
 		log.Fatal(server.ListenAndServe())
 	}
 }
