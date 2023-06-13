@@ -1,14 +1,31 @@
 package gowebhookexec
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"time"
 )
 
 func Listen(config ViperConfig) {
+	if len(config.Handler) == 0 {
+		log.Println("No handlers configured.")
+	}
+
 	for handlerName, handlerViperConfig := range config.Handler {
 		handlerConfig := newRequestHandlerConfig(handlerName, handlerViperConfig.Key, handlerViperConfig.CmdName)
+
+		// handle case where the default handler was configured in config file only expecting the default "date" cmd
+		if handlerName == "default" && handlerConfig.CmdName == "" {
+			handlerConfig.CmdName = "date"
+		}
+
+		if handlerConfig.CmdName == "" {
+			log.Println(fmt.Sprintf("Handler '%s' has no cmd configured.", handlerConfig.Name))
+
+			continue
+		}
+
 		requestHandler := getRequestHandlerManager().newHandler(handlerConfig)
 		http.HandleFunc(handlerConfig.Path, requestHandler.handleRequest)
 	}

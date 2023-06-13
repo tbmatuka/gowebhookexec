@@ -42,9 +42,12 @@ func LoadConfig() ViperConfig {
 	config.SslCert = viper.GetString("sslcert")
 
 	config.Handler = make(map[string]*ViperHandlerConfig)
-	config.Handler["default"] = new(ViperHandlerConfig)
-	config.Handler["default"].Key = viper.GetString("default-key")
-	config.Handler["default"].CmdName = viper.GetString("default-cmd")
+
+	if viper.GetString("default-key") != "" {
+		config.Handler["default"] = new(ViperHandlerConfig)
+		config.Handler["default"].Key = viper.GetString("default-key")
+		config.Handler["default"].CmdName = viper.GetString("default-cmd")
+	}
 
 	viper.SetConfigName("webhook-exec")
 	viper.SetConfigType("yaml")
@@ -52,7 +55,7 @@ func LoadConfig() ViperConfig {
 	viper.AddConfigPath("$HOME/.config/webhook-exec/")
 
 	err = viper.ReadInConfig()
-	if err != nil && config.Handler["default"].CmdName == "date" {
+	if err != nil {
 		log.Printf("Warning: %v\n", err)
 	}
 
