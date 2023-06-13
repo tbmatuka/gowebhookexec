@@ -1,7 +1,6 @@
 package gowebhookexec
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -21,7 +20,7 @@ func Listen(config ViperConfig) {
 		}
 
 		if handlerConfig.CmdName == "" {
-			log.Println(fmt.Sprintf("Handler '%s' has no cmd configured.", handlerConfig.Name))
+			log.Printf("Handler '%s' has no cmd configured.\n", handlerConfig.Name)
 
 			continue
 		}

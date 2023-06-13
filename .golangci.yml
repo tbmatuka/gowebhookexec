@@ -4,6 +4,14 @@ linters-settings:
     check-shadowing: true
   golint:
     min-confidence: 0
+  depguard:
+    rules:
+      main:
+        allow:
+          - $gostd
+          - github.com/tbmatuka/gowebhookexec
+          - github.com/spf13/pflag
+          - github.com/spf13/viper
   gocyclo:
     min-complexity: 42
   cyclop:
@@ -60,13 +68,6 @@ linters:
     - golint # deprecated
     - interfacer # deprecated
     - maligned # deprecated
-
-issues:
-  exclude:
-    # bugs of typecheck linter
-    - "undeclared name: `shellquote`"
-    - "github.com/kballard/go-shellquote\" imported but not used"
-    - "github.com/haproxytech/config-parser/v4/types\" imported but not used"
 
 run:
   skip-dirs:
