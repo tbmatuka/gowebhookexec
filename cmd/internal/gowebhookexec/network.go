@@ -30,15 +30,15 @@ func Listen(config ViperConfig) {
 		http.HandleFunc(handlerConfig.Path, requestHandler.handleRequest)
 	}
 
-	intefrace, err := net.InterfaceByName(config.Host)
+	networkInterface, err := net.InterfaceByName(config.Host)
 	if err == nil {
-		log.Println("Found interface by name:", intefrace.Name)
+		log.Println("Found interface by name:", networkInterface.Name)
 
-		addresses, _ := intefrace.Addrs()
+		addresses, _ := networkInterface.Addrs()
 		firstAddress, ok := addresses[0].(*net.IPNet)
 
 		if !ok {
-			log.Fatalln("Failed to get address for interface:", intefrace.Name)
+			log.Fatalln("Failed to get address for interface:", networkInterface.Name)
 		}
 
 		config.Host = firstAddress.IP.String()
