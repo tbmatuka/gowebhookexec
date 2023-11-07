@@ -1,5 +1,6 @@
 [Unit]
 Description=Webhook Exec
+After=network-online.target
 
 [Service]
 ExecStart=/usr/local/bin/webhook-exec
